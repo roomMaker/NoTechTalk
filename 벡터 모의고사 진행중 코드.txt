@@ -1,0 +1,128 @@
+#include <string>
+#include <vector>
+#include <algorithm>
+
+using namespace std;
+
+vector<int> solution(vector<int> answers) {
+    // 1. 각 사함마다 몇 문제씩 맞췄는지 확인한다.
+    // 모든 문제의 답을 순회하면서 각 사람마다 횟수를 센다.
+    
+    int count[3] = {0};
+    static const int solutions[3][10] = {
+        {1,2,3,4,5},
+        {2,1,2,3,2,4,2,5},
+        {3,3,1,1,2,2,4,4,5,5}
+    };
+    static const int patternSize[3] = {5,8,10};
+    size_t size = answers.size();
+    for(size_t i = 0;i<size;i++)
+    {
+        if(solution[0][i] % patternSize[0] == answers[i])
+        {
+            count[0]++;
+        }
+    }
+    for(size_t i = 0;i<size;i++)
+    {
+        int currentAnswer = answers[i];
+    
+        if(currentAnswer == 1)
+        {
+            if(i % patternSize[0] == 0)
+            {
+                ++count[0];
+            }
+            if(i % patternSize[1] == 1)
+            {
+                ++count[1];
+            }
+            if(i % patternSize[2] == 2 || i % patternSize[2] == 3)
+            {
+                ++count[2];
+            }
+        }
+        else if(currentAnswer == 2)
+        {
+            if(i % 5 == 1)
+            {
+                ++count[0];
+            }
+            if(i % 2 == 0)
+            {
+                ++count[1];
+            }
+            if(i % 10 == 4 || i % 10 == 5)
+            {
+                ++count[2];
+            }
+        }
+        else if(currentAnswer == 3)
+        {
+            if(i % 5 == 2)
+            {
+                ++count[0];
+            }
+            if(i % 8 == 3)
+            {
+                ++count[1];
+            }
+            if(i % 10 == 0 || i % 10 == 1)
+            {
+                ++count[2];
+            }
+        }
+        else if(currentAnswer == 4)
+        {
+            if(i % 5 == 3)
+            {
+                ++count[0];
+            }
+            if(i % 8 == 5)
+            {
+                ++count[1];
+            }
+            if(i % 10 == 6 || i % 10 == 7)
+            {
+                ++count[2];
+            }
+        }
+        if(currentAnswer == 5)
+        {
+            if(i % 5 == 4)
+            {
+                ++count[0];
+            }
+            if(i % 8 == 7)
+            {
+                ++count[1];
+            }
+            if(i % 10 == 8 || i % 10 == 9)
+            {
+                ++count[2];
+            }
+        }
+    }
+    // 2. 가장 많이 맞춘 사람을 확인한다.
+    int maxCount = 0;
+    for(int i=0;i<3;i++)
+    {
+        if(maxCount < count[i])
+        {   
+            maxCount = count[i];
+        }
+    }
+    // 3. 여러 명이라면 오름차순으로 정렬한다.
+    
+    
+    vector<int> answer;
+    for(int i=0;i<3;i++)
+    {   
+        if(maxCount == count[i])
+        {
+            answer.push_back(i+1);
+        }
+    }
+    sort(answer.begin(), answer.end());
+    return answer;
+}
